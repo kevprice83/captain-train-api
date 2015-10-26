@@ -115,16 +115,15 @@ before do
   content_type :json
 end
 
-get '/.json' do 
-	
-  stations.to_json
+get '/' do 
+	'Welcome to the train-API'
 end
 
-get '/random.json' do
+get '/random' do
 	stations.random.to_json
 end
 
-get '/find/:name.json' do |name|
+get '/find/:name' do |name|
   stations.find_named(name).to_json
 end
 
