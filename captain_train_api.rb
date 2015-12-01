@@ -17,7 +17,9 @@ class StationCollection
   end
 
   def find_named(name)
-    @result = @stations.select { |station| station.name.match(name) }
+    @results = []
+    @stations.each { |station| @results.push(station.name) }
+    @results.select { |station| station.match(name) }
   end
 
   def find_country(initials)
