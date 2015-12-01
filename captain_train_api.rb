@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'csv'
 require 'json'
+require 'pry'
 
 
 class StationCollection
@@ -16,7 +17,7 @@ class StationCollection
   end
 
   def find_named(name)
-    @stations.select { |station| station.name.match(name) }
+    @result = @stations.select { |station| station.name.match(name) }
   end
 
   def find_country(initials)
@@ -24,6 +25,7 @@ class StationCollection
   end
 
   def by_distance(position)
+    binding.pry
     @stations.map { |station| station.distance(position) }.sort
   end
 
@@ -115,8 +117,8 @@ before do
   content_type :json
 end
 
-get '/' do 
-	'Welcome to the train-API'
+get '/' do
+	'Welcome to the train API'
 end
 
 get '/random' do
@@ -130,7 +132,6 @@ end
 get '/find/by_distance' do
   lat_lon = params.values_at('latitude', 'longitude')
   position = Position.new(*lat_lon)
-
   stations.by_distance(position).take(10).to_json
 end
 

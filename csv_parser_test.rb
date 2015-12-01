@@ -42,7 +42,7 @@ class StationTest < Minitest::Test
 		destination = Position.new(33.94, -118.4)
 
 		distance = station.distance(destination)
-		assert_equal 2886.4, distance.round(1)
+		assert_equal 2886.4, distance.distance.round(1)
 	end
 end
 
