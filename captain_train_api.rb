@@ -116,16 +116,24 @@ before do
   content_type :json
 end
 
+configure :development do
+  set :show_exceptions, :after_handler
+end
+
+not_found do
+  { message: 'Not Found', code: 404 }.to_json
+end
+
+error do
+  { message: env['sinatra.error'], code: 500 }.to_json
+end
+
 get '/' do
 	'Welcome to the train API'
 end
 
 get '/random' do
 	stations.random.to_json
-end
-
-get '/find/:name' do |name|
-  stations.find_named(name).to_json
 end
 
 get '/find/by_distance' do
@@ -136,4 +144,8 @@ end
 
 get '/find/country/:initials' do |initials|
   stations.find_country(initials).to_json
+end
+
+get '/find/:name' do |name|
+  stations.find_named(name).to_json
 end
