@@ -25,7 +25,6 @@ class StationCollection
   end
 
   def by_distance(position)
-    binding.pry
     @stations.map { |station| station.distance(position) }.sort
   end
 
@@ -134,11 +133,6 @@ get '/find/by_distance' do
   position = Position.new(*lat_lon)
   stations.by_distance(position).take(10).to_json
 end
-
-# get '/find/:name.xml' do |name|
-#   content_type :xml
-#   stations.find_named(name).to_xml
-# end
 
 get '/find/country/:initials' do |initials|
   stations.find_country(initials).to_json
