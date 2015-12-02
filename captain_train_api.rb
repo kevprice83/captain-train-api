@@ -27,7 +27,8 @@ class StationCollection
   end
 
   def by_distance(position)
-    @stations.map { |station| station.distance(position) }.sort
+    # @results = @stations.select { |station| station.has_position? }
+    @results = @stations.map { |station| station.distance(position) }.sort
   end
 
   def size
@@ -40,6 +41,7 @@ class StationCollection
 end
 
 class Station
+  attr_reader :attributes
 	def initialize(attributes)
 		@attributes = attributes
 	end
@@ -50,6 +52,22 @@ class Station
 
   def country
     @attributes['country']
+  end
+
+  def latitude
+    @attributes['latitude']
+  end
+
+  def longitude
+    @attributes['longitude']
+  end
+
+  def slug
+    @attributes['slug']
+  end
+
+  def id
+    @attributes['id']
   end
 
 	def valid?
@@ -96,7 +114,7 @@ class Position
 end
 
 class Distance
-  attr_reader :distance
+  attr_reader :distance, :station, :longitude, :latitude, :id, :slug, :country
   
   def initialize(distance, station)
     @distance = distance
