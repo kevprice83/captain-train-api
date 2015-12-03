@@ -12,6 +12,11 @@ class StationCollection
 		@stations = rows.map { |row| Station.new(row.to_hash) }.select { |s| s.valid? }
 	end
 
+  def random_min
+    @results = @stations.each { |station| station.assign_attributes }
+    @results.sample
+  end
+
   def random
     @stations.sample
   end
@@ -37,6 +42,20 @@ class StationCollection
 
   def all
     @stations
+  end
+end
+
+class StationMinimised
+  attr_accessor :name, :longitude, :latitude, :parent_station_id, :country, :is_main_station, :is_city, :time_zone
+  def initialize(name, longitude, latitude, parent_station_id, country, is_main_station, is_city, time_zone)
+    @name = name
+    @longitude = longitude
+    @latitude = latitude
+    @parent_station_id = parent_station_id
+    @country = country
+    @is_main_station = is_main_station
+    @is_city = is_city
+    @time_zone = time_zone
   end
 end
 
@@ -70,6 +89,178 @@ class Station
     @attributes['id']
   end
 
+  def uic
+    @attributes['uic']
+  end
+
+  def uic8_sncf
+    @attributes['uic8_sncf']
+  end
+
+  def parent_station_id
+    @attributes['parent_station_id']
+  end
+
+  def is_city
+    @attributes['is_city']
+  end
+
+  def is_main_station
+    @attributes['is_main_station']
+  end
+
+  def time_zone
+    @attributes['time_zone']
+  end
+
+  def is_suggestable
+    @attributes['is_suggestable']
+  end
+
+  def sncf_id
+    @attributes['sncf_id']
+  end
+
+  def sncf_tvs_id
+    @attributes['sncf_tvs_id']
+  end
+
+  def sncf_is_enabled
+    @attributes['sncf_is_enabled']
+  end
+
+  def idtgv_id
+    @attributes['idtgv_id']
+  end
+
+  def idtgv_is_enabled
+    @attributes['idtgv_is_enabled']
+  end
+
+  def db_id
+    @attributes['db_id']
+  end
+
+  def db_is_enabled
+    @attributes['db_is_enabled']
+  end
+
+  def idbus_id
+    @attributes['idbus_id']
+  end
+
+  def idbus_is_enabled
+    @attributes['idbus_is_enabled']
+  end
+
+  def ouigo_id
+    @attributes['ouigo_id']
+  end
+
+  def ouigo_is_enabled
+    @attributes['ouigo_is_enabled']
+  end
+
+  def trenitalia_id
+    @attributes['trenitalia_id']
+  end
+
+  def trenitalia_is_enabled
+    @attributes['trenitalia_is_enabled']
+  end
+
+  def ntv_id
+    @attributes['ntv_id']
+  end
+
+  def ntv_is_enabled
+    @attributes['ntv_is_enabled']
+  end
+
+  def hkx_id
+    @attributes['hkx_id']
+  end
+
+  def hkx_is_enabled
+    @attributes['hkx_is_enabled']
+  end
+
+  def sncf_self_service_machine
+    @attributes['sncf_self_service_machine']
+  end
+
+  def same_as
+    @attributes['same_as']
+  end
+
+  def info_de
+    @attributes['info:de']
+  end
+
+  def info_en
+    @attributes['info:en']
+  end
+
+  def info_es
+    @attributes['info:es']
+  end
+
+  def info_fr
+    @attributes['info:fr']
+  end
+
+  def info_it
+    @attributes['info:it']
+  end
+
+  def info_nl
+    @attributes['info:nl']
+  end
+
+  def info_cs
+    @attributes['info:cs']
+  end
+
+  def info_da
+    @attributes['info:da']
+  end
+
+  def info_hu
+    @attributes['info:hu']
+  end
+
+  def info_ja
+    @attributes['info:ja']
+  end
+
+  def info_ko
+    @attributes['info:ko']
+  end
+
+  def info_pl
+    @attributes['info:pl']
+  end
+
+  def info_pt
+    @attributes['info:pt']
+  end
+
+  def info_ru
+    @attributes['info:ru']
+  end
+
+  def info_sv
+    @attributes['info:sv']
+  end
+
+  def info_tr
+    @attributes['info:tr']
+  end
+
+  def info_zh
+    @attributes['info:zh']
+  end
+
 	def valid?
 		name
 	end
@@ -77,6 +268,12 @@ class Station
 	def to_json(options = {})
 		@attributes.to_json(options)
 	end
+
+  def assign_attributes
+    keepers = ["name", "longitude", "latitude", "parent_station_id", "country", "is_main_station", "is_city", "time_zone"]
+    info = @attributes.keep_if { |key,_| keepers.include? key }
+    StationMinimised.new(*info)
+  end
 
   def position
     lat_lon = @attributes.values_at('latitude', 'longitude')
@@ -152,14 +349,24 @@ get '/' do
 	'Welcome to the train API'
 end
 
+get '/random_min' do
+  stations.random_min.to_json
+end
+
 get '/random' do
 	stations.random.to_json
 end
 
+# get '/find/by_distance_min' do
+#   lat_lon = params.values_at('latitude', 'longitude')
+#   position = Position.new(*lat_lon)
+#   stations.by_distance(position).take(5).to_json
+# end
+
 get '/find/by_distance' do
   lat_lon = params.values_at('latitude', 'longitude')
   position = Position.new(*lat_lon)
-  stations.by_distance(position).take(10).to_json
+  stations.by_distance(position).take(5).to_json
 end
 
 get '/find/country/:initials' do |initials|
