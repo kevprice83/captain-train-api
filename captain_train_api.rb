@@ -21,18 +21,26 @@ class StationCollection
     @stations.sample
   end
 
+  def find_named_min(name)
+    @results = @stations.select { |station| station.name.match(name) }
+    @stations_minimised = []
+    @results.each { |station| @stations_minimised.push(station.assign_attributes) }
+  end
+
   def find_named(name)
-    @results = []
-    @stations.each { |station| @results.push(station.name) }
-    @results.select { |station| station.match(name) }
+    @stations.select { |station| station.name.match(name) }
   end
 
   def find_country(initials)
     @stations.select { |station| station.country.match(initials) }
   end
 
+  def by_distance_min(position)
+    @results = @stations.each { |station| station.assign_attributes }
+    @results.map { |station| station.distance(position) }.sort
+  end
+
   def by_distance(position)
-    # @results = @stations.select { |station| station.has_position? }
     @results = @stations.map { |station| station.distance(position) }.sort
   end
 
@@ -349,24 +357,24 @@ get '/' do
 	'Welcome to the train API'
 end
 
-get '/random_min' do
+get '/random' do
+  stations.random.to_json
+end
+
+get '/random/min' do
   stations.random_min.to_json
 end
-
-get '/random' do
-	stations.random.to_json
-end
-
-# get '/find/by_distance_min' do
-#   lat_lon = params.values_at('latitude', 'longitude')
-#   position = Position.new(*lat_lon)
-#   stations.by_distance(position).take(5).to_json
-# end
 
 get '/find/by_distance' do
   lat_lon = params.values_at('latitude', 'longitude')
   position = Position.new(*lat_lon)
   stations.by_distance(position).take(5).to_json
+end
+
+get '/find/by_distance/min' do
+  lat_lon = params.values_at('latitude', 'longitude')
+  position = Position.new(*lat_lon)
+  stations.by_distance_min(position).take(5).to_json
 end
 
 get '/find/country/:initials' do |initials|
@@ -375,4 +383,8 @@ end
 
 get '/find/:name' do |name|
   stations.find_named(name).to_json
+end
+
+get '/find/:name/min' do |name|
+  stations.find_named_min(name).to_json
 end
