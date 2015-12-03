@@ -21,6 +21,10 @@ class StationCollection
     @stations.sample
   end
 
+  def find_id(id)
+    @stations.select { |station| station.id == (id) }
+  end
+
   def find_named_min(name)
     @results = @stations.select { |station| station.name.match(name) }
     @stations_minimised = []
@@ -29,6 +33,12 @@ class StationCollection
 
   def find_named(name)
     @stations.select { |station| station.name.match(name) }
+  end
+
+  def find_country_min(initials)
+    @results = @stations.select { |station| station.country.match(initials) }
+    @stations_minimised = []
+    @results.each { |station| @stations_minimised.push(station.assign_attributes) }
   end
 
   def find_country(initials)
@@ -365,6 +375,10 @@ get '/random/min' do
   stations.random_min.to_json
 end
 
+get '/find_by_id/:id' do |id|
+  stations.find_id(id).to_json
+end
+
 get '/find/by_distance' do
   lat_lon = params.values_at('latitude', 'longitude')
   position = Position.new(*lat_lon)
@@ -375,6 +389,10 @@ get '/find/by_distance/min' do
   lat_lon = params.values_at('latitude', 'longitude')
   position = Position.new(*lat_lon)
   stations.by_distance_min(position).take(5).to_json
+end
+
+get '/find/country/:initials/min' do |initials|
+  stations.find_country_min(initials).to_json
 end
 
 get '/find/country/:initials' do |initials|
