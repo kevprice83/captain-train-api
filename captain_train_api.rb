@@ -349,6 +349,7 @@ stations = StationCollection.new
 
 before do
   content_type :json
+  headers["X-Usage"] = 7
 end
 
 configure :development do
