@@ -364,7 +364,7 @@ error do
 end
 
 get '/' do
-	'Welcome to the train API'
+	'Welcome to the awesome train API'
 end
 
 get '/random' do
