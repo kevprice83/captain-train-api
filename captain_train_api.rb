@@ -372,7 +372,7 @@ get '/random' do
   stations.random.to_json
 end
 
-get '/random/min' do
+get '/random/min.json' do
   stations.random_min.to_json
 end
 
