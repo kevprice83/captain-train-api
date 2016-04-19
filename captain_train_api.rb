@@ -51,7 +51,7 @@ class StationCollection
   end
 
   def by_distance(position)
-    @results = @stations.map { |station| station.distance(position) }.sort
+    @stations.map { |station| station.distance(position) }.sort
   end
 
   def size
@@ -349,7 +349,6 @@ stations = StationCollection.new
 
 before do
   content_type :json
-  headers["X-Usage"] = "7"
 end
 
 configure :development do
