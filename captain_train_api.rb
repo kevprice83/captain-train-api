@@ -368,7 +368,7 @@ get '/' do
 	'Welcome to the awesome train API'
 end
 
-get '/random' do
+get '/v3' do
   stations.random.to_json
 end
 
