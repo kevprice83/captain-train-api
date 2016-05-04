@@ -372,7 +372,7 @@ get '/v3' do
   stations.random.to_json
 end
 
-get '/random/min.json' do
+get '/v3/MedicalNecessityEdits' do
   stations.random_min.to_json
 end
 
