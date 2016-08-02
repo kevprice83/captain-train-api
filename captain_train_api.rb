@@ -350,7 +350,7 @@ stations = StationCollection.new
 before do
   content_type :json
   headers["X-Usage"] = "5"
-	headers["X-Proxy-Cache-Status"]
+	headers["X-Proxy-Cache-Status"] = "22"
 end
 
 configure :development do
