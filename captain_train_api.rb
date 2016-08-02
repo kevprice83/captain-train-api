@@ -350,6 +350,7 @@ stations = StationCollection.new
 before do
   content_type :json
   headers["X-Usage"] = "7"
+	headers["X-Proxy-Cache-Status"]
 end
 
 configure :development do
@@ -368,11 +369,11 @@ get '/' do
 	'Welcome to the awesome train API'
 end
 
-get '/v3/MedicalNecessityEdits/' do
+get '/random' do
   stations.random.to_json
 end
 
-get '/random/min.json' do
+get '/random/min' do
   stations.random_min.to_json
 end
 
