@@ -349,7 +349,7 @@ stations = StationCollection.new
 
 before do
   content_type :json
-  headers["X-Usage"] = "7"
+  headers["X-Usage"] = "5"
 	headers["X-Proxy-Cache-Status"]
 end
 
