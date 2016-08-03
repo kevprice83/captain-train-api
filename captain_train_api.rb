@@ -408,3 +408,7 @@ end
 get '/find/:name/min' do |name|
   stations.find_named_min(name).to_json
 end
+
+get '/oauth/token' do
+	{"access_token": "eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9", "token_type": "bearer"}
+end
