@@ -24,10 +24,6 @@ class StationCollection
   def find_id(id)
     @stations.select { |station| station.id == (id) }
   end
-	
-	def token
-		@token = {"access_token": "eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9", "token_type": "bearer"}
-	end
 
   def find_named_min(name)
     @results = @stations.select { |station| station.name.match(name) }
@@ -414,5 +410,5 @@ get '/find/:name/min' do |name|
 end
 
 get '/oauth/token' do
-	stations.token
+	{"access_token": "eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9", "token_type": "bearer"}.to_json
 end
