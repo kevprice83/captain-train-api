@@ -410,5 +410,5 @@ get '/find/:name/min' do |name|
 end
 
 get '/oauth/token' do
-	{ :access_token=> 'eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9', :token_type=> 'bearer', ttl=> 3600 }.to_json
+	{ :access_token=> 'eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9', :token_type=> 'bearer', :ttl=> 3600 }.to_json
 end
