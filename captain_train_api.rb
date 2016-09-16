@@ -32,7 +32,9 @@ class StationCollection
   end
 
   def find_named(name)
-    @stations.select { |station| station.name.match(name) }
+		@results = []
+    @stations.each { |station| @results.push(station.name) }
+		@results.select { |station| station.match(name) }
   end
 
   def find_country_min(initials)
@@ -51,7 +53,8 @@ class StationCollection
   end
 
   def by_distance(position)
-    @stations.map { |station| station.distance(position) }.sort
+		@results = @stations.select { |station| station.has_lat? }
+    @results.map { |station| station.distance(position) }.sort
   end
 
   def size
@@ -281,6 +284,10 @@ class Station
 
 	def valid?
 		name
+	end
+	
+	def has_lat?
+		latitude
 	end
 
 	def to_json(options = {})
